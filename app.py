@@ -7,17 +7,20 @@ def clean_text(text):
     text = text.lower()
     return text
 
-# simple logic (replace with ML later)
 def predict_review(text):
-    text = clean_text(text)
+    text_clean = clean_text(text)
+
+    if len(text_clean.split()) < 5:
+        return "⚠️ Fake Review (CG) ❌"
 
     fake_words = ["amazing", "best", "perfect", "buy now"]
 
-    for word in fake_words:
-        if word in text:
-            return "⚠️ Fake Review (CG) ❌"
+    score = sum([1 for word in fake_words if word in text_clean])
 
-    return "✅ Real Review (OR)"
+    if score >= 2:
+        return "⚠️ Fake Review (CG) ❌"
+    else:
+        return "✅ Real Review (OR)"
 
 # UI
 st.title("🛒 Fake Review Detection System")
